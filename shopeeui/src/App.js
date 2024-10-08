@@ -2,26 +2,23 @@ import logo from './logo.svg';
 import './App.css';
 import SignIn from './sign-in/SignIn';
 import React from 'react'
-import ReactDOM from 'react-dom'
+import Checkout from './checkout/Checkout';
+import { useSelector, useDispatch } from 'react-redux';
 
-function App() {
+function App(store) {
+  console.log(store.getState());
+  // const count = useSelector(state => state.counter.count);
+  const dispatch = useDispatch();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <SignIn></SignIn>
+      {/* <header className="App-header">
+       header
+      </header> */}
+       <button onClick={() => dispatch({ type: 'INCREMENT' })}>Increment</button>
+       <button onClick={() => dispatch({ type: 'DECREMENT' })}>Decrement</button>
+      {/* <Checkout/> */}
+      {/* <input:value=count> */}
+      <footer>footer</footer>
     </div>
   );
 }
