@@ -1,4 +1,4 @@
-import axiom from 'axios'
+import axios from 'axios'
 
 
 axios.interceptors.request.use( config => {
