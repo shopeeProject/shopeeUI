@@ -17,6 +17,7 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { Store } from '@mui/icons-material';
 import authenticationservice from '../../backendservices/authenticationservice';
+ import UserOperations from '../../backendservices/backendservice';
 // import AppTheme from '../shared-theme/AppTheme';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
@@ -122,6 +123,9 @@ export default function SignIn(props) {
     type: 'set',
     text: 'Read the docs'
   })
+  const userdetails = () =>{
+    return UserOperations.getUserDetails();
+  }
   return (
     // <AppTheme {...props}>
     <div>
@@ -136,7 +140,7 @@ export default function SignIn(props) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-           {props.name} Sign in {props.store2.getState()}
+           {props.name} Sign in {props.store2.getState()}  <button onClick={userdetails}>Get users</button>
           </Typography>
           <Box
             component="form"
