@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import ToggleColorMode from './components/ToggleColorMode';
+import ToggleColorMode from './ToggleColorMode';
 import getCheckoutTheme from './theme/getCheckoutTheme';
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({

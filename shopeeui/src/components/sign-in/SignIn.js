@@ -15,6 +15,8 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import { Store } from '@mui/icons-material';
+import authenticationservice from '../../backendservices/authenticationservice';
 // import AppTheme from '../shared-theme/AppTheme';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
@@ -84,6 +86,9 @@ export default function SignIn(props) {
       email: data.get('email'),
       password: data.get('password'),
     });
+    authenticationservice.signin(data.get('email'),data.get('password'),'user')
+    event.preventDefault();
+
   };
 
   const validateInputs = () => {
@@ -112,7 +117,11 @@ export default function SignIn(props) {
 
     return isValid;
   };
-
+  // console.log(props.name)
+  props.store2.dispatch({
+    type: 'set',
+    text: 'Read the docs'
+  })
   return (
     // <AppTheme {...props}>
     <div>
@@ -127,7 +136,7 @@ export default function SignIn(props) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            Sign in
+           {props.name} Sign in {props.store2.getState()}
           </Typography>
           <Box
             component="form"
@@ -197,13 +206,13 @@ export default function SignIn(props) {
               variant="contained"
               onClick={validateInputs}
             >
-              Sign in
+             Sign in
             </Button>
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <span>
                 <Link
-                  href="/material-ui/getting-started/templates/sign-in/"
+                  href="/sign-up/"
                   variant="body2"
                   sx={{ alignSelf: 'center' }}
                 >

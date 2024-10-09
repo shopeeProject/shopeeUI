@@ -21,7 +21,7 @@ import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
 import SimCardRoundedIcon from '@mui/icons-material/SimCardRounded';
 import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
-const Card = styled(MuiCard)<{ selected?: boolean }>(({ theme }) => ({
+const Card = styled(MuiCard)(({ theme }) => ({
   border: '1px solid',
   borderColor: theme.palette.divider,
   width: '100%',
@@ -91,13 +91,11 @@ export default function PaymentForm() {
   const [cvv, setCvv] = React.useState('');
   const [expirationDate, setExpirationDate] = React.useState('');
 
-  const handlePaymentTypeChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
   };
 
-  const handleCardNumberChange = (event: { target: { value: string } }) => {
+  const handleCardNumberChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
     if (value.length <= 16) {
@@ -105,14 +103,14 @@ export default function PaymentForm() {
     }
   };
 
-  const handleCvvChange = (event: { target: { value: string } }) => {
+  const handleCvvChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     if (value.length <= 3) {
       setCvv(value);
     }
   };
 
-  const handleExpirationDateChange = (event: { target: { value: string } }) => {
+  const handleExpirationDateChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     const formattedValue = value.replace(/(\d{2})(?=\d{2})/, '$1/');
     if (value.length <= 4) {
