@@ -3,11 +3,35 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
+function todos(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return state.concat([action.text])
+    case "set":
+      state.pop()
+      return state  
+    default:
+      return state
+  }
+}
+const store = createStore(todos, ['Use Redux'])
+store.dispatch({
+  type: '',
+  text: 'Read the docs'
+})
+const store2 = createStore(todos,['abc'])
+
+const stores = store
 const root = ReactDOM.createRoot(document.getElementById('root'));
+console.log(store.getState())
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <Provider > */}
+    <App {...[store,store2] }/>
+    {/* </Provider>, */}
   </React.StrictMode>
 );
 

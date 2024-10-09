@@ -1,28 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
-import SignIn from './sign-in/SignIn';
+import SignIn from './components/sign-in/SignIn';
 import React from 'react'
 import ReactDOM from 'react-dom'
+import SignUp from './components/sign-up/SignUp';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ResponsiveAppBar from './components/navbar';
 
-function App() {
+
+function App(store) {
+  console.log(store[0].getState())
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <SignIn></SignIn>
-    </div>
+    
+      <BrowserRouter>
+      <ResponsiveAppBar></ResponsiveAppBar>
+        <Routes>
+
+        <Route path = "/user/sign-in"  element = {<SignIn store2 = {store[1]} name = "User"></SignIn>}></Route>
+        <Route path = "/user/sign-up"  element = {<SignUp name = "user"></SignUp>}></Route>
+
+      </Routes>
+      </BrowserRouter>
+
   );
 }
 
