@@ -85,9 +85,19 @@ const FormGrid = styled('div')(() => ({
   flexDirection: 'column',
 }));
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
+
+  const updateStore = (e) => {
+    const { name, value } = e.target;
+    const {store}=props;
+    const currState= store.getState();
+    currState.payment[name]=value;
+    store.dispatch({type:'UPDATE_PERSONAL_DETAILS',payload:currState.payment})
+    console.log(store.getState());
+  }
+  
   const [paymentType, setPaymentType] = React.useState('creditCard');
-  const [cardNumber, setCardNumber] = React.useState('');
+  const [cardNumber, setCardNumber] = React.useState(props.store.payment);
   const [cvv, setCvv] = React.useState('');
   const [expirationDate, setExpirationDate] = React.useState('');
 
@@ -100,6 +110,7 @@ export default function PaymentForm() {
     const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
     if (value.length <= 16) {
       setCardNumber(formattedValue);
+      updateStore("checkout",formattedValue);
     }
   };
 

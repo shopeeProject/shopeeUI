@@ -20,26 +20,24 @@ import InfoMobile from './InfoMobile';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import SitemarkIcon from './SitemarkIcon';
-import TemplateFrame from './TemplateFrame';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
-function getStepContent(step) {
+function getStepContent(step,props) {
+  const {paymenStore}= props.store;
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return <AddressForm store= {paymenStore} />;
     case 1:
-      return <PaymentForm />;
+      return <PaymentForm store= {paymenStore} />;
     case 2:
-      return <Review />;
+      return <Review store= {paymenStore}/>;
     default:
       throw new Error('Unknown step');
   }
 }
-export default function Checkout() {
+export default function Checkout(props) {
   const [mode, setMode] = React.useState('light');
-  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const checkoutTheme = createTheme(getCheckoutTheme(mode));
-  const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
@@ -55,15 +53,6 @@ export default function Checkout() {
       setMode(systemPrefersDark ? 'dark' : 'light');
     }
   }, []);
-
-  const toggleColorMode = () => {
-    const newMode = mode === 'dark' ? 'light' : 'dark';
-    setMode(newMode);
-    localStorage.setItem('themeMode', newMode); // Save the selected mode to localStorage
-  };
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -72,7 +61,7 @@ export default function Checkout() {
   };
   return (
     <div>
-      <ThemeProvider theme={showCustomTheme ? checkoutTheme : defaultTheme}>
+      <ThemeProvider theme={ checkoutTheme}>
         <CssBaseline enableColorScheme />
         <Grid container sx={{ height: { xs: '100%', sm: '100dvh' } }}>
           <Grid
@@ -222,7 +211,7 @@ export default function Checkout() {
                 </Stack>
               ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep)}
+                  {getStepContent(activeStep,props)}
                   <Box
                     sx={[
                       {

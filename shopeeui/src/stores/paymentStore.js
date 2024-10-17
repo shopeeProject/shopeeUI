@@ -1,37 +1,47 @@
 // src/paymentStore.js
-import { createStore } from 'redux';
 
-// Initial state
+import { createStore } from "redux";
+
+// Action types
+const UPDATE_PERSONAL_DETAILS = 'UPDATE_PERSONAL_DETAILS';
+const UPDATE_PAYMENT_DETAILS = 'UPDATE_PAYMENT_DETAILS';
+
 const initialState = {
-    paymentDetails: {
+        firstName: '',
+        lastName: '',
+        line1: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: '',
         method: '',
         cardNumber: '',
         expirationDate: '',
-    },
-};
-
-// Action types
-const SET_PAYMENT_METHOD = 'SET_PAYMENT_METHOD';
-const SET_CARD_DETAILS = 'SET_CARD_DETAILS';
-
+  };
+  
 // Reducer function
-const paymentReducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case SET_PAYMENT_METHOD:
-            return { ...state, paymentDetails: { ...state.paymentDetails, method: action.payload.method } };
-        case SET_CARD_DETAILS:
-            return { ...state, paymentDetails: { ...state.paymentDetails, ...action.payload.details } };
-        default:
-            return state;
+      case UPDATE_PERSONAL_DETAILS:
+        return action.payload;
+        case UPDATE_PAYMENT_DETAILS:
+        return action.payload;
+  
+      default:
+        return state;
     }
-};
-
-// Create the store
-const paymentStore = createStore(paymentReducer);
+  };
+  
 
 // Action creators
-export const setPaymentMethod = (method) => ({ type: SET_PAYMENT_METHOD, payload: { method } });
-export const setCardDetails = (details) => ({ type: SET_CARD_DETAILS, payload: { details } });
+export const updatePersonalDetails = (updatedFields) => ({
+  type: UPDATE_PERSONAL_DETAILS,
+  payload: updatedFields,  // This will contain fields to be updated, e.g., { firstName: 'Jane' }
+});
 
-// Export the store
-export default paymentStore;
+export const updatePaymentDetails = (updatedFields) => ({
+  type: UPDATE_PAYMENT_DETAILS,
+  payload: updatedFields,  // This will contain fields to be updated, e.g., { method: 'Credit Card' }
+});
+
+  export default reducer;

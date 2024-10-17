@@ -1,8 +1,8 @@
 // src/store.js
 import { createStore, combineReducers } from 'redux';
 import userReducer from './userStore';
-import productReducer from './productStore';
-import cartReducer from './cartStore';
+import productReducer from './productsStore';
+import cartReducer from './userCartStore';
 import paymentReducer from './paymentStore';
 
 const rootReducer = combineReducers({
