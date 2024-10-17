@@ -16,10 +16,10 @@ import AdbIcon from '@mui/icons-material/Adb';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const [email,setEmail] = React.useState(props.user.getState()['user']['email']);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -34,6 +34,12 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  
+                // setEmail(props.user.getState()['emailAddress'])
+
+  const emailF = props.user.subscribe(()=>{
+                setEmail(props.user.getState()['user']['email'])
+              });
 
   return (
     <AppBar position="static">
@@ -55,7 +61,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            LOGO 
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -109,7 +115,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            LOGO     {email===""?"Empty":email}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

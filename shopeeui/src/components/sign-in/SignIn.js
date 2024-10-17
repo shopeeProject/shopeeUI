@@ -18,6 +18,11 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { Store } from '@mui/icons-material';
 import authenticationservice from '../../backendservices/authenticationservice';
  import UserOperations from '../../backendservices/backendservice';
+import { redirect } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { setUser } from '../../stores/userStore';
+import backendservice from '../../backendservices/backendservice';
+
 // import AppTheme from '../shared-theme/AppTheme';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
 
@@ -63,6 +68,7 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
+  let navigate = useNavigate();
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -87,8 +93,28 @@ export default function SignIn(props) {
       email: data.get('email'),
       password: data.get('password'),
     });
+    
     authenticationservice.signin(data.get('email'),data.get('password'),'user')
+    .then(response1 => {
+        try{
+          backendservice.getUserDetails().then(response =>{
+            const currState= props.user.getState();
+            console.log(response)
+            // currState.user["name"] = response.name
+            // currState.user['email'] = data.get('email')
+
+            props.user.dispatch(setUser(response.data.Name,response.data.EmailAddress));
+            console.log(props.user.getState())
+          })
+        
+      }
+      catch (err) {
+        console.log(err)
+      }
+    })
+    
     event.preventDefault();
+    navigate("/");
 
   };
 
@@ -118,11 +144,12 @@ export default function SignIn(props) {
 
     return isValid;
   };
-  // console.log(props.name)
-  props.store2.dispatch({
-    type: 'set',
-    text: 'Read the docs'
-  })
+
+  console.log(props.user.getState())
+  // props.store2.dispatch({
+  //   type: 'set',
+  //   text: 'Read the docs'
+  // })
   const userdetails = () =>{
     return UserOperations.getUserDetails();
   }
@@ -140,7 +167,7 @@ export default function SignIn(props) {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-           {props.name} Sign in {props.store2.getState()}  <button onClick={userdetails}>Get users</button>
+           {props.name} Sign in  <button onClick={userdetails}>Get users</button>
           </Typography>
           <Box
             component="form"

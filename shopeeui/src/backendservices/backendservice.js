@@ -27,6 +27,25 @@ axios.interceptors.request.use( config => {
 
  
 class UserOperations{
+  handleLogout = async() => {
+  //   return axios.get("/user/logout",
+  //     {
+  //         proxy: {
+  //             protocol: 'http',
+  //             host: 'http://localhost',
+  //             port: 5000,
+  //             auth: {
+  //                 username: 'yasoob',
+  //                 password: 'p@$$w0Rd'
+  //             }
+  //         }
+  //     }
+  // ).then(res => {
+  //       console.log(res.data)
+  //   }).catch(err => console.error(err))
+      
+
+  }
   getUserDetails = async() =>{
     // return axios.get("/get-user-details",{proxy:
     //   proxy
@@ -49,7 +68,7 @@ class UserOperations{
       }
   )
       .then(res => {
-          console.log(res.data)
+          return res.data;
       }).catch(err => console.error(err))
   }
 

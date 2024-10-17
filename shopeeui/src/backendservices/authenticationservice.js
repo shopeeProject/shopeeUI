@@ -1,4 +1,6 @@
 import axios from "axios";
+import backendservice from "./backendservice";
+import { removeUser } from "../stores/userStore";
 
 const proxy = {
   proxy: {
@@ -24,6 +26,7 @@ class AuthenticationService {
         .then(response => {
           if (response.data.accessToken) {
             localStorage.setItem("user", JSON.stringify(response.data));
+            localStorage.setItem("emailAddress",emailAddress)
           }
           console.log(response.data)
           return response.data;
@@ -34,8 +37,21 @@ class AuthenticationService {
         });
   }
 
-  signOut() {
-    localStorage.removeItem("user");
+  signOut(userStore) {
+    let user = localStorage.getItem("user")
+    let email = localStorage.getItem("emailAddress")
+    try{
+      localStorage.removeItem("user");
+      userStore.dispatch(removeUser(email))
+      return {"message":email + " logged out successfully"}
+
+    }
+    catch{
+      return {"message":"User is not signed in"}
+    }
+    
+    
+    // return backendservice.handleLogout();
   }
 
   register = async(name, emailAddress, password) => {
