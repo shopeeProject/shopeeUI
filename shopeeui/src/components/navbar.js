@@ -12,14 +12,28 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import { Badge } from '@mui/material';
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const routes = {
+  "Profile":"/profile",
+  "Sign In":'/user/sign-in',
+  "Register":"/user/sign-up",
+  "Logout":"/user/logout"
+}
+
 
 function ResponsiveAppBar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [email,setEmail] = React.useState(props.user.getState()['user']['email']);
+  const [cartCount,setCartCount] = React.useState(props.user.getState()['cart']['size'])
+  const settingsOnLogin = ['Profile', 'Logout'];
+  const settingsNeutral = ['Sign In','Register']
+  const [settings,setSettings] = React.useState(settingsNeutral);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,18 +53,25 @@ function ResponsiveAppBar(props) {
 
   const emailF = props.user.subscribe(()=>{
                 setEmail(props.user.getState()['user']['email'])
+                setCartCount(props.user.getState()['cart']['size'])
+                
               });
 
+              React.useEffect(() => {
+                email==""?setSettings(settingsNeutral):setSettings(settingsOnLogin)
+            },[email])
+  
+
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -61,7 +82,7 @@ function ResponsiveAppBar(props) {
               textDecoration: 'none',
             }}
           >
-            LOGO 
+            Shopee 
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -98,12 +119,12 @@ function ResponsiveAppBar(props) {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -115,7 +136,7 @@ function ResponsiveAppBar(props) {
               textDecoration: 'none',
             }}
           >
-            LOGO     {email===""?"Empty":email}
+            Shopee     
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -128,10 +149,29 @@ function ResponsiveAppBar(props) {
               </Button>
             ))}
           </Box>
+          <Box sx={{ flexGrow: 0,marginRight:2  }}>
+          {
+            email === ""? <div></div>:
+            <a href='/user/cart' style={{"color":"white"}}>
+              <Badge badgeContent={cartCount} color="primary"><ShoppingCartRoundedIcon fontSize='small' ></ShoppingCartRoundedIcon></Badge>
+            </a>
+          }
+
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              {
+                email===""?
+              <PersonOutlineRoundedIcon></PersonOutlineRoundedIcon>:
+              <div>
+                <Avatar alt={email} src='/'></Avatar>
+              </div>
+              }
+              
+                
+
+                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
               </IconButton>
             </Tooltip>
             <Menu
@@ -152,7 +192,7 @@ function ResponsiveAppBar(props) {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                  <Typography sx={{ textAlign: 'center' }}><a href={routes[setting]}>{setting}</a></Typography>
                 </MenuItem>
               ))}
             </Menu>
