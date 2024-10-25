@@ -22,6 +22,7 @@ import { redirect } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../../stores/userStore';
 import backendservice from '../../backendservices/backendservice';
+import { SetEntity } from '../../backendservices/handler';
 
 // import AppTheme from '../shared-theme/AppTheme';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
@@ -94,27 +95,37 @@ export default function SignIn(props) {
       password: data.get('password'),
     });
     
-    authenticationservice.signin(data.get('email'),data.get('password'),'user')
+    authenticationservice.signin(data.get('email'),data.get('password'),props.entity)
     .then(response1 => {
+      if (!response1.success){
+        alert("Error while logging in "+response1.data)
+        event.preventDefault()
+        return
+      }
         try{
-          backendservice.getUserDetails().then(response =>{
-            const currState= props.user.getState();
+          backendservice.getDetails(props.entity).then(response =>{
+            const currState= props.store.getState();
             console.log(response)
             // currState.user["name"] = response.name
             // currState.user['email'] = data.get('email')
-
-            props.user.dispatch(setUser(response.data.Name,response.data.EmailAddress));
-            console.log(props.user.getState())
+            alert("Login successful")
+            console.log(response.data)
+            console.log(props.entity)
+            props.store.dispatch(setUser(response.data.name,response.data.emailAddress,props.entity))
+            // props.store.dispatch(setUser(response.data.name,response.data.emailAddress));
+            console.log(props.store.getState())
+            event.preventDefault();
+            navigate("/");
           })
         
       }
       catch (err) {
         console.log(err)
+        alert(err)
       }
     })
     
-    event.preventDefault();
-    navigate("/");
+    event.preventDefault()
 
   };
 
@@ -145,7 +156,7 @@ export default function SignIn(props) {
     return isValid;
   };
 
-  console.log(props.user.getState())
+  console.log(props.store.getState())
   // props.store2.dispatch({
   //   type: 'set',
   //   text: 'Read the docs'

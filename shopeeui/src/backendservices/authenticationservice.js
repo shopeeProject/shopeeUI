@@ -20,8 +20,8 @@ const proxy = {
  */
 // axios.defaults.baseURL = 'http://localhost:5000';
 class AuthenticationService {
-  signin = (emailAddress, password,person) => {
-      return axios.post("/user-login"
+  signin = (emailAddress, password,entity) => {
+      return axios.post("/"+entity+"-login"
     ,{emailAddress : emailAddress, password:password,port:5000,host:'localhost'})
         .then(response => {
           if (response.data.accessToken) {
@@ -29,11 +29,17 @@ class AuthenticationService {
             localStorage.setItem("emailAddress",emailAddress)
           }
           console.log(response.data)
-          return response.data;
+          return {
+            data:response.data,
+            success:true
+          };
         })
         .catch(err => {
           console.log(err);
-          return err;
+          return {
+            data:err.response.data.message,
+            success:false
+          };
         });
   }
 
@@ -42,6 +48,7 @@ class AuthenticationService {
     let email = localStorage.getItem("emailAddress")
     try{
       localStorage.removeItem("user");
+      localStorage.removeItem("http://shopee123.com:state")
       userStore.dispatch(removeUser(email))
       return {"message":email + " logged out successfully"}
 
@@ -54,11 +61,19 @@ class AuthenticationService {
     // return backendservice.handleLogout();
   }
 
-  register = async(name, emailAddress, password) => {
-    return axios.post("/api/auth/signup",{port: 5000}, {
+  register = async(name, emailAddress, password,entity) => {
+    return axios.post("/create-"+entity, {
       name,
-      emailAddress,
-      password
+      emailAddress:emailAddress,
+      password,
+      port:5000
+    }).then((response)=>{
+      console.log(response.data);
+
+      return response.data;
+    }).catch((err)=>{
+      console.log(err,err.response.data);
+      return err.response.data
     });
   }
 

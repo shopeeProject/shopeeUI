@@ -14,6 +14,7 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
+import authenticationservice from '../../backendservices/authenticationservice';
 // import TemplateFrame from './TemplateFrame';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -50,7 +51,7 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   }),
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const [mode, setMode] = React.useState('light');
   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   const defaultTheme = createTheme({ palette: { mode } });
@@ -128,12 +129,14 @@ export default function SignUp() {
       return;
     }
     const data = new FormData(event.currentTarget);
-    console.log({
+    let d = {
       name: data.get('name'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    }
+    console.log(d);
+    authenticationservice.register(d['name'],d['email'],d['password'],props.entity)
     event.preventDefault();
   };
 
@@ -149,7 +152,7 @@ export default function SignUp() {
               variant="h4"
               sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
             >
-              Sign up
+             {props.name} Sign up
             </Typography>
             <Box
               component="form"

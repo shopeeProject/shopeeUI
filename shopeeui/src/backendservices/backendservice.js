@@ -46,7 +46,7 @@ class UserOperations{
       
 
   }
-  getUserDetails = async() =>{
+  getDetails = async(entity) =>{
     // return axios.get("/get-user-details",{proxy:
     //   proxy
     // }).then(response =>{
@@ -54,7 +54,7 @@ class UserOperations{
     //   return response.data;
     // })
     // axios.defaults.baseURL = "http://localhost:5000"
-    return axios.get("/user/get-user-details",
+    return axios.get("/"+entity+"/get-"+entity+"-details",
       {
           proxy: {
               protocol: 'http',

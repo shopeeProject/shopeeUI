@@ -16,23 +16,30 @@ import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import { Badge } from '@mui/material';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+
 
 const routes = {
   "Profile":"/profile",
   "Sign In":'/user/sign-in',
   "Register":"/user/sign-up",
-  "Logout":"/user/logout"
+  "Business Sign In" : "/seller/sign-in",
+  "Business Sign Up" : "/seller/sign-up",
+  "Logout":"/user/logout",
+  "Add Product":"/seller/add-product",
+  "My Products":"/seller/get-products"
 }
 
+// ['Products', 'Pricing', 'Blog']
 
 function ResponsiveAppBar(props) {
+  const [pages,setPages] = React.useState(['a']);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [email,setEmail] = React.useState(props.user.getState()['user']['email']);
-  const [cartCount,setCartCount] = React.useState(props.user.getState()['cart']['size'])
+  const [email,setEmail] = React.useState(props.store.getState()['user']['email']);
+  const [cartCount,setCartCount] = React.useState(props.store.getState()['cart']['size'])
   const settingsOnLogin = ['Profile', 'Logout'];
-  const settingsNeutral = ['Sign In','Register']
+  const settingsNeutral = ['Sign In','Register',"Business Sign In","Business Sign Up"]
+  const [entity,SetEntity] = React.useState(props.store.getState()['user']['entity'])
   const [settings,setSettings] = React.useState(settingsNeutral);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -48,18 +55,29 @@ function ResponsiveAppBar(props) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  
-                // setEmail(props.user.getState()['emailAddress'])
+  let customroutes = {
+    "user":[],
+    "seller":['Add Product',"My Products"],
+    "Admin":[],
+    "default":[]
+  }
+                // setEmail(props.store.getState()['emailAddress'])
 
-  const emailF = props.user.subscribe(()=>{
-                setEmail(props.user.getState()['user']['email'])
-                setCartCount(props.user.getState()['cart']['size'])
-                
+  const emailF = props.store.subscribe(()=>{
+                setEmail(props.store.getState()['user']['email'])
+                setCartCount(props.store.getState()['cart']['size'])
+                SetEntity(props.store.getState()['user']['entity'])
               });
 
               React.useEffect(() => {
                 email==""?setSettings(settingsNeutral):setSettings(settingsOnLogin)
             },[email])
+            React.useEffect(() => {
+              email==""?setPages(customroutes["default"]):setPages(customroutes[entity])
+          },[email])
+            React.useEffect(()=>{
+              entity==""?setSettings(settingsNeutral):setSettings(settingsOnLogin)
+            },[entity])
   
 
   return (
@@ -112,9 +130,10 @@ function ResponsiveAppBar(props) {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
+            {console.log(pages)}
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                  <Typography sx={{ textAlign: 'center' }}><a href={routes[page]}>{page}</a></Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -145,7 +164,7 @@ function ResponsiveAppBar(props) {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                <a style={{"text-decoration":"none","color":"white"}} href={routes[page]}>{page}</a>
               </Button>
             ))}
           </Box>
@@ -191,7 +210,8 @@ function ResponsiveAppBar(props) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+               
+                <MenuItem key={setting} onClick={handleCloseUserMenu}> {console.log(setting,settings)}
                   <Typography sx={{ textAlign: 'center' }}><a href={routes[setting]}>{setting}</a></Typography>
                 </MenuItem>
               ))}

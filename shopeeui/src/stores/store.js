@@ -16,10 +16,9 @@ const rootReducer = combineReducers({
     payment: paymentReducer,
 });
 
-const store1 = configureStore({reducer:rootReducer,preloadedState : stateloader.loadState()})
-const store = createStore(rootReducer);
-console.log(store1.getState())
-store1.subscribe(() => {
-    stateloader.saveState(store1.getState());
+const store = configureStore({reducer:rootReducer,preloadedState : stateloader.loadState()})
+console.log(store.getState())
+store.subscribe(() => {
+    stateloader.saveState(store.getState());
 });
-export default store1;
+export default store;

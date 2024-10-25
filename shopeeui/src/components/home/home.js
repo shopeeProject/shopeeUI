@@ -2,20 +2,21 @@ import { Home } from "@mui/icons-material";
 import authenticationservice from "../../backendservices/authenticationservice";
 import MultiActionAreaCard from "../card";
 import backendservicewithoutauth from "../../backendservices/backendservicewithoutauth";
+import InputFileUpload from "../fileUpload";
 let products = await backendservicewithoutauth.getProducts().then((response)=> 
     {return response}
 );
 console.log(typeof(products))
 export default function HomePage(props){
     const handleLogout = () =>{
-    let a = authenticationservice.signOut(props.user);
+    let a = authenticationservice.signOut(props.store);
     return alert(a.message)
 }
     const changeEmail = () =>{
         console.log("chang")
-        console.log(props.user.getState())
-        props.user.dispatch({"type":"set","key":"emailAddress","value":"a"})
-        console.log(props.user.getState())
+        console.log(props.store.getState())
+        props.store.dispatch({"type":"set","key":"emailAddress","value":"a"})
+        console.log(props.store.getState())
     }
     return <div>
         <button>abc</button>
@@ -29,5 +30,6 @@ export default function HomePage(props){
         {/* {console.log(props)} */}
         <button onClick={changeEmail}>Add</button>
         <button onClick={handleLogout}>Logout</button>
+        <InputFileUpload></InputFileUpload>
     </div>
 }

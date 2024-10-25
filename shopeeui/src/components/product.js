@@ -13,9 +13,9 @@ async function getproduct(pid){
 let  arr = window.location.href.split("/");
 let pid = arr[arr.length-1]
  
-let products = await getproduct(pid).then((response)=>{
-    console.log(response)
-    return response;})
+// let products = await getproduct(pid).then((response)=>{
+//     console.log(response)
+//     return response;})
 let product = {
     "pid": 1,
     "name": "Iphone16",
@@ -29,35 +29,42 @@ let product = {
 }
 let product1 = JSON.parse(JSON.stringify(product));
 product1['pid'] = 2;
-console.log(products)
+// console.log(products)
  function Product (props){
+    const [product,setProduct] = React.useState([])
+    let  arr = window.location.href.split("/");
+    let pid = arr[arr.length-1]
+    getproduct(pid).then((response)=>{
+        console.log(response)
+        setProduct(response.data)
+    })
 
     function handleaddToCart() {
     {
-        props.user.dispatch(addToCart(product))}
-        console.log(props.user.getState())
+        props.store.dispatch(addToCart(product))}
+        console.log(props.store.getState())
     }
     function handleaddToCart1() {
         {
-            props.user.dispatch(addToCart(product1))
+            props.store.dispatch(addToCart(product1))
         }
-            console.log(props.user.getState())
+            console.log(props.store.getState())
         }
 
         function handleDeleteFromCart(pid) {
             {
-                props.user.dispatch(removeFromCart(pid))}
-                console.log(props.user.getState())
+                props.store.dispatch(removeFromCart(pid))}
+                console.log(props.store.getState())
             }
 
 
     
     
-    console.log(products)
+    // console.log(products)
     return <div>
         <button onClick={handleaddToCart}>Add to cart</button>
         <button onClick={handleaddToCart1}>Add to cart</button>
-        <button onClick={()=>handleDeleteFromCart(products.pid)}>Remove cart 1</button>
+        <button onClick={()=>handleDeleteFromCart(product.pid)}>Remove cart 1</button>
         <button onClick={()=>handleDeleteFromCart(2)}>Remove cart 2</button>
      </div>
 }

@@ -6,6 +6,7 @@ const initialState = {
     
         name: '',
         email: '',
+        entity:'',
         address: '',
         orders: [],
     
@@ -24,6 +25,7 @@ const userReducer = (state = initialState, action) => {
             let state_copy = Object.assign({},state)
             state_copy["name"]= action.payload.name
             state_copy["email"] = action.payload.email;
+            state_copy["entity"] = action.payload.entity;
             return state_copy;
         case REMOVE_USER:
             return initialState
@@ -51,9 +53,9 @@ const userReducer = (state = initialState, action) => {
 const store = createStore(userReducer);
 
 // Action creators
-export const setUser = (name, email) => ({
+export const setUser = (name, email,entity) => ({
     type: SET_USER,
-    payload: { name, email },
+    payload: { name, email,entity },
 });
 
 export const removeUser = (email) => ({

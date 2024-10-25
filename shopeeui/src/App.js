@@ -35,14 +35,16 @@ function App(store) {
  
   return (
       <BrowserRouter>
-      <ResponsiveAppBar user = {user}></ResponsiveAppBar>
+      <ResponsiveAppBar store = {user}></ResponsiveAppBar>
         <Routes>
-        <Route path='/' element = {<HomePage user = {user}></HomePage>}></Route>
-        <Route path = '/product/:pid' element = {<Product user = {user}></Product>}></Route>
-        <Route path = "/user/sign-in"  element = {<SignIn user = {user} name = "User"></SignIn>}></Route>
-        <Route path = "/user/sign-up"  element = {<SignUp name = "user"></SignUp>}></Route>
+        <Route path='/' element = {<HomePage store = {user}></HomePage>}></Route>
+        <Route path = '/product/:pid' element = {<Product store = {user}></Product>}></Route>
+        <Route path = "/user/sign-in"  element = {<SignIn store = {user} name = "User" entity = "user"></SignIn>}></Route>
+        <Route path = "/user/sign-up"  element = {<SignUp name = "user" entity = "user"></SignUp>}></Route>
+        <Route path = "/seller/sign-in"  element = {<SignIn store = {user} name = "Shopee Business" entity = "seller"></SignIn>}></Route>
+        <Route path = "/seller/sign-up"  element = {<SignUp name = "Shopee Business" entity = "seller"></SignUp>}></Route>
         <Route path = "/user/checkout"  element = {<Checkout store = {store[0]} ></Checkout>}></Route>
-        <Route path = "/user/profile" element = {<ProtectedRoute  component={Profile} isAuthenticated={isAuthenticated}  user = {store[0]}></ProtectedRoute>}></Route>        <Route path = "/profile" element = {<ProtectedRoute path = "/profile" component={Profile} isAuthenticated={isAuthenticated}  user = {store[0]}></ProtectedRoute>}></Route>
+        <Route path = "/profile" element = {<ProtectedRoute  component={Profile} isAuthenticated={isAuthenticated}  store = {store[0]}></ProtectedRoute>}></Route>        <Route path = "/profile" element = {<ProtectedRoute path = "/profile" component={Profile} isAuthenticated={isAuthenticated}  user = {store[0]}></ProtectedRoute>}></Route>
         <Route path = "/user/cart" element = {<ProtectedRoute  component={Cart} isAuthenticated={isAuthenticated}  store = {store[0]}></ProtectedRoute>}></Route>
       </Routes>
       </BrowserRouter>

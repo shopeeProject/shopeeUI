@@ -1,4 +1,4 @@
 
 export default function Profile(props) {
-    console.log(props.user.getState())
+    console.log(props.store.getState())
 }
