@@ -60,6 +60,23 @@ class backendServiceWithoutAuth {
                 return res.data;
             }).catch(err => console.error(err))
     }
+    getCategories = async () =>{
+        return axios.get("/get-all-categories",{
+            proxy: {
+                protocol: 'http',
+                host: 'http://localhost',
+                port: 5000,
+                auth: {
+                    username: 'yasoob',
+                    password: 'p@$$w0Rd'
+                }
+            }
+        }
+    )
+        .then(res => {
+            return res;
+        }).catch(err => console.error(err))
+}
 
 
 }

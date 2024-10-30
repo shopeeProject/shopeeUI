@@ -3,7 +3,8 @@ import authenticationservice from "../../backendservices/authenticationservice";
 import MultiActionAreaCard from "../card";
 import backendservicewithoutauth from "../../backendservices/backendservicewithoutauth";
 import InputFileUpload from "../fileUpload";
-let products = await backendservicewithoutauth.getProducts().then((response)=> 
+let products = []
+products = await backendservicewithoutauth.getProducts().then((response)=> 
     {return response}
 );
 console.log(typeof(products))
@@ -18,6 +19,8 @@ export default function HomePage(props){
         props.store.dispatch({"type":"set","key":"emailAddress","value":"a"})
         console.log(props.store.getState())
     }
+
+    
     return <div>
         <button>abc</button>
         <Home></Home>
@@ -28,8 +31,9 @@ export default function HomePage(props){
             )
         }
         {/* {console.log(props)} */}
-        <button onClick={changeEmail}>Add</button>
+        {/* <button onClick={changeEmail}>Add</button> */}
         <button onClick={handleLogout}>Logout</button>
+
         <InputFileUpload></InputFileUpload>
     </div>
 }

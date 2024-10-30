@@ -1,5 +1,5 @@
 import axios from "axios";
-import backendservice from "./backendservice";
+import backendservice from "./userBackendservice";
 import { removeUser } from "../stores/userStore";
 
 const proxy = {

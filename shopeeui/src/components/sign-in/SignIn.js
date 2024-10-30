@@ -17,11 +17,11 @@ import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { Store } from '@mui/icons-material';
 import authenticationservice from '../../backendservices/authenticationservice';
- import UserOperations from '../../backendservices/backendservice';
+ import UserOperations from '../../backendservices/userBackendservice';
 import { redirect } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../../stores/userStore';
-import backendservice from '../../backendservices/backendservice';
+import backendservice from '../../backendservices/userBackendservice';
 import { SetEntity } from '../../backendservices/handler';
 
 // import AppTheme from '../shared-theme/AppTheme';

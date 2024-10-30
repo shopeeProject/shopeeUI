@@ -1,0 +1,70 @@
+{
+    "fields": [
+      {
+        "name": "product_name",
+        "meta": {
+          "displayType": "text_field",
+          "displayName": "Product Name",
+          "validation":{
+            "required":true
+          }
+        }
+      },
+      {
+        "name": "product_price",
+        "meta": {
+          "displayName": "Price",
+          "displayType": "number",
+          "validation":{
+            "required":true
+          }
+        }
+      },
+      {
+        "name": "product_category",
+        "meta": {
+          "displayName": "Category",
+          "displayType": "select",
+          "validation":{
+            "required":true
+          }
+        }
+      },
+      {
+        "name": "product_count",
+        "meta": {
+          "displayName": "Count",
+          "displayType": "number",
+          "validation":{
+            "required":true
+          }
+        }
+      },
+      {
+        "name": "product_description",
+        "meta": {
+          "config": {
+            "minRows": "2",
+            "maxRows": "6"
+          },
+          "displayName": "Product Description",
+          "displayType": "multitext"
+        }
+      },
+      {
+        "name": "product_image",
+        "meta": {
+          "config": {
+            "accept": "image/jpeg,image/png",
+            "filePreview": true,
+            "blob": true
+          },
+          "displayType": "file",
+          "displayName": "Product Image",
+          "validation":{
+            "required":true
+          }
+        }
+      }
+    ]
+  }
