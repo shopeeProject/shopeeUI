@@ -34,7 +34,8 @@ const cartReducer = (state = initialState, action) => {
                     "itemId":action.payload.pid,
                     "itemName":action.payload.name,
                     "count":1,
-                    "price":action.payload.price
+                    "price":action.payload.price,
+                    "image":action.payload.image
                 }
             )
             newState.value = newState.value + action.payload.price;

@@ -27,7 +27,7 @@ export default function ActionAreaCard(props) {
                         <CardMedia
                             component="img"
                             height="140"
-                            image="/static/images/cards/contemplative-reptile.jpg"
+                            image={item.image}
                             alt={item.itemName}
                         />
                         <CardContent>

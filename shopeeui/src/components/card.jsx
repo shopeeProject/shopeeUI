@@ -38,6 +38,15 @@ export default function MultiActionAreaCard(props) {
           Share
         </Button>
       </CardActions>
+      {props.edit?
+      <a href={'/product/edit/'+props.edit}>
+      <CardActions>
+        <Button size="small" color="warning">
+          Edit
+        </Button>
+      </CardActions>
+      </a>:null}
+      {/* {props.edit==nul} */}
     </Card>
   );
 }

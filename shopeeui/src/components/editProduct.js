@@ -1,5 +1,5 @@
 import TextField from '@mui/material/TextField';
-import { Box, Button, TextareaAutosize } from '@mui/material';
+import { Box, Button, FormControlLabel, Switch, TextareaAutosize } from '@mui/material';
 import TextArea from './textArea';
 import NumberInputBasic from './productNumberInput';
 import { NumberInput } from '@mui/base/Unstable_NumberInput/NumberInput';
@@ -24,20 +24,25 @@ let productCategoryForm = {
       "options": []
     }
   }
+  let productPidForm = {
+    "name": "product_pid",
+    "meta": {
+      "displayName": "Product Id",
+      "displayType": "text",
+      "isReadonly":true
+    }
+  }
+  let productAvailabilityForm = {
+    "name": "product_availability",
+    "meta": {
+        "displayType": "switch"
+    }
+}
   let schema1 = schema;
 let productCategoriesPromise = backendservicewithoutauth.getCategories()
 
   let productCategories = null
-
-//   schema1.fields[2] = JSON.parse(JSON.stringify(productCategoryForm))
-
-function AddProductForm(props){
-    const [newSchema,setNewSchema] = React.useState(null);
-    // useEffect(()=>{console.log("xuf",schema.fields[2])},[newSchema])
-    console.log(productCategories,newSchema)
-    
-    if(newSchema == null){ 
-         productCategoriesPromise.then((response)=>{
+  productCategoriesPromise.then((response)=>{
         console.log(response)
         let options = []
         response.data.map((val)=>{
@@ -54,14 +59,55 @@ function AddProductForm(props){
         let schema1 = JSON.parse(JSON.stringify(schema))
         schema1.fields[2] = productCategoryForm;
         productCategories = schema1;
-        setNewSchema(schema1)
         return schema1;
         // setNewSchema(schema1);
         // console.log(newSchema)
 
     })
-        // setNewSchema(productCategories)
-    }const pid = useParams();
+//   schema1.fields[2] = JSON.parse(JSON.stringify(productCategoryForm))
+function getproduct(pid){
+    return  backendservicewithoutauth.getProduct(pid).then((response) =>{
+             return response
+         })
+        }
+function EditProductForm(props){
+    const [newSchema,setNewSchema] = React.useState(null);
+    const [availability,setAvailability] = React.useState(false)
+    const [imageId,setImageId] = React.useState(null)
+    // useEffect(()=>{console.log("xuf",schema.fields[2])},[newSchema])
+    console.log(productCategories,newSchema)
+     const pid = useParams();
+    if(newSchema == null){
+    //     setNewSchema(productCategories)
+    // }
+   
+    // if (props.edit!=null &&newSchema != null&& !("value" in newSchema.fields[0]['meta']) ){
+        console.log(props.edit,pid)
+        
+        getproduct(pid.pid).then((response)=>{
+            console.log(response)
+            let schema1 = JSON.parse(JSON.stringify(productCategories))
+            if(response!=null){
+                productPidForm["meta"]["value"] = pid.pid;
+                schema1.fields[0]['meta']['value'] = response.name;
+                // schema1.fields[2] = productCategories.fields[2];
+                schema1.fields[1]['meta']['value'] = response.price;
+                schema1.fields[2]['meta']['value'] = response.category;
+                schema1.fields[3]['meta']['value'] = response.count;
+                schema1.fields[4]['meta']['value'] = response.description;
+                schema1.fields[5]['meta']['file'] = response.image;                
+                schema1.fields.push(productPidForm)
+                // schema1.fields.push(productAvailabilityForm)
+                // productAvailabilityForm['meta']["value"] = {"value":response.availability}
+                // schema1.fields[4]['value'] = response.data.image;
+                setNewSchema(schema1)
+                setImageId(response.image)
+                setAvailability(response.availability)
+                console.log(newSchema,schema1)
+            }
+
+        }).catch((err)=>console.log(err))
+    }
     
     const [name,setName] = React.useState("")
     const [count,setCount] = React.useState("")
@@ -85,6 +131,12 @@ function AddProductForm(props){
         }
 
     }
+    const handleSwitchChange = (event) => {
+        console.log("abc",availability,event.target,event.target.checked)
+        setAvailability(event.target.checked);
+        // console.log(availability)
+    
+      };
     // schema.fields[2] = productCategoryForm
     function handleAddProductSubmit(event){
         console.log("clicked",name,count,price,description)
@@ -107,25 +159,33 @@ function AddProductForm(props){
     //         <Button onClick={handleAddProductSubmit}>Submit</Button>
     // </Box>
     newSchema === null?null:
-    <div>
+    <div><FormControlLabel  control={<Switch  
+        checked={availability}
+      onChange={handleSwitchChange}
+      inputProps={{ 'aria-label': 'controlled' }}
+    />} label="Active?" ></FormControlLabel>
         <Muiform schema={newSchema}
+        // data={{"product_image":"https://firebasestorage.googleapis.com/v0/b/brave-theater-255512.appspot.com/o/images%2Fflight.pngSamsung+F452aabc%40gmail.com?alt=media"}}
+        
     onChange={(...data) => {
         // handle data on change
-        console.log(data)
+        console.log(data,availability)
         handleChange(data)
         
     }}
     onSubmit={(...data) => {
-        console.log(data);
+        console.log(data,availability);
         // event.preventDefault()
-        sellerBackendService.addProduct(data[0]).then((response)=>{
+        data[0]['product_availability'] = availability 
+        sellerBackendService.editProduct(data[0]).then((response)=>{
             alert(response.data.message)
         }).catch((err)=>{
-            alert(err.response.data)
+            console.log(err)
+            alert(err)
         })
     }}
     ></Muiform>
-    {/* <button type="button" onClick={()=>{
+  {/* <button type="button" onClick={()=>{
         let a = newSchema
         console.log("df")
         a["fields"][2] = productCategoryForm;
@@ -136,4 +196,4 @@ function AddProductForm(props){
     )
 }
 
-export default AddProductForm;
+export default EditProductForm;
