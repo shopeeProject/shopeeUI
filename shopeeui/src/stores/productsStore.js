@@ -2,7 +2,7 @@
 import { createStore } from 'redux';
 
 // Initial state
-const initialState = {
+export const productInitialState = {
     products: [],
 };
 
@@ -11,7 +11,7 @@ const SET_PRODUCTS = 'SET_PRODUCTS';
 const ADD_PRODUCT = 'ADD_PRODUCT';
 
 // Reducer function
-const productReducer = (state = initialState, action) => {
+const productReducer = (state = productInitialState, action) => {
     switch (action.type) {
         case SET_PRODUCTS:
             return { ...state, products: action.payload.products };

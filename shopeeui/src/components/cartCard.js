@@ -9,8 +9,12 @@ import { NumberInput } from '@mui/base/Unstable_NumberInput/NumberInput';
 import QuantityInput from './numberInput';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Button from '@mui/material/Button';
 import AlertDialogSlide from './dialog';
+import { useNavigate } from 'react-router-dom';
+
 export default function ActionAreaCard(props) {
+    const navigate = useNavigate();
     const [products, setProducts] = React.useState(props.store.getState()['cart']['items']);
     const [cartValue, setCartValue] = React.useState(props.store.getState()['cart']['value']);
     console.log(products)
@@ -18,6 +22,10 @@ export default function ActionAreaCard(props) {
         setProducts(props.store.getState()['cart']['items']);
         setCartValue(props.store.getState()['cart']['value'])
     })
+    function checkout(){
+              navigate('/user/checkout'); // Change to your desired route
+    } 
+
     return (
         <div>
         {/* { (activateAlert)?:null} */}
@@ -50,6 +58,7 @@ export default function ActionAreaCard(props) {
                 </Card>
             })}
             <h1>Cart Value: {cartValue}</h1>
+            <Button onClick={checkout}>Checkout</Button>
         </div>
     );
 }

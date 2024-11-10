@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { useSelector, useDispatch } from 'react-redux';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
@@ -13,9 +13,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import RadioGroup from '@mui/material/RadioGroup';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
 import { styled } from '@mui/material/styles';
-
 import AccountBalanceRoundedIcon from '@mui/icons-material/AccountBalanceRounded';
 import CreditCardRoundedIcon from '@mui/icons-material/CreditCardRounded';
 import SimCardRoundedIcon from '@mui/icons-material/SimCardRounded';
@@ -85,21 +83,13 @@ const FormGrid = styled('div')(() => ({
   flexDirection: 'column',
 }));
 
-export default function PaymentForm(props) {
+export default function PaymentForm() {
+  const dispatch = useDispatch();
 
-  const updateStore = (e) => {
-    const { name, value } = e.target;
-    const {store}=props;
-    const currState= store.getState();
-    currState.payment[name]=value;
-    store.dispatch({type:'UPDATE_PERSONAL_DETAILS',payload:currState.payment})
-    console.log(store.getState());
-  }
+  // Use useSelector to access the payment details from the Redux store
+  const { cardNumber, cvv, expirationDate } = useSelector((state) => state.payment);
   
   const [paymentType, setPaymentType] = React.useState('creditCard');
-  const [cardNumber, setCardNumber] = React.useState(props.store.payment);
-  const [cvv, setCvv] = React.useState('');
-  const [expirationDate, setExpirationDate] = React.useState('');
 
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
@@ -108,24 +98,26 @@ export default function PaymentForm(props) {
   const handleCardNumberChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     const formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+
     if (value.length <= 16) {
-      setCardNumber(formattedValue);
-      updateStore("checkout",formattedValue);
+      // setLocalCardNumber(formattedValue);
+      dispatch({ type: 'UPDATE_CARD_NUMBER', payload: formattedValue });
     }
   };
 
   const handleCvvChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     if (value.length <= 3) {
-      setCvv(value);
+      dispatch({ type: 'UPDATE_CVV', payload: value });
     }
   };
 
   const handleExpirationDateChange = (event) => {
     const value = event.target.value.replace(/\D/g, '');
     const formattedValue = value.replace(/(\d{2})(?=\d{2})/, '$1/');
+
     if (value.length <= 4) {
-      setExpirationDate(formattedValue);
+      dispatch({ type: 'UPDATE_EXPIRATION_DATE', payload: formattedValue });
     }
   };
 
@@ -225,11 +217,11 @@ export default function PaymentForm(props) {
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                width: '100%',
+                alignItems: 'flex-end',
                 gap: 2,
               }}
             >
-              <FormGrid sx={{ flexGrow: 1 }}>
+              <FormGrid sx={{ maxWidth: '60%' }}>
                 <FormLabel htmlFor="card-number" required>
                   Card number
                 </FormLabel>
@@ -253,7 +245,7 @@ export default function PaymentForm(props) {
                   placeholder="123"
                   required
                   size="small"
-                  value={cvv}
+                  value={ cvv}
                   onChange={handleCvvChange}
                 />
               </FormGrid>
@@ -309,7 +301,7 @@ export default function PaymentForm(props) {
               Bank:
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
-              Mastercredit
+              Master credit
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>

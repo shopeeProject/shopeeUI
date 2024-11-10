@@ -2,7 +2,7 @@
 import { createStore } from 'redux';
 
 // Initial state
-const initialState = {
+export const userStoreInitialState = {
     
         name: '',
         email: '',
@@ -19,7 +19,7 @@ const ADD_ORDER = 'ADD_ORDER';
 const REMOVE_USER = "REMOVE_USER";
 
 // Reducer function
-const userReducer = (state = initialState, action) => {
+const userReducer = (state = userStoreInitialState, action) => {
     switch (action.type) {
         case SET_USER:
             let state_copy = Object.assign({},state)
@@ -28,7 +28,7 @@ const userReducer = (state = initialState, action) => {
             state_copy["entity"] = action.payload.entity;
             return state_copy;
         case REMOVE_USER:
-            return initialState
+            return userStoreInitialState
         case UPDATE_ADDRESS:
             return {
                 

@@ -1,3 +1,5 @@
+import { paymentInitialState } from './stores/paymentStore';
+ import { userStoreInitialState } from './stores/userStore';
 class StateLoader {
 
     loadState() {
@@ -26,10 +28,11 @@ class StateLoader {
     }
 
     initializeState() {
-        return {
-              //state object
-
-            }
+        const rootState ={
+            payment: paymentInitialState,
+            user: userStoreInitialState,
+        }
+        return rootState;
         };
     }
 

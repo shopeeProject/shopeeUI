@@ -2,21 +2,32 @@ import * as React from 'react';
 
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
+import { useSelector, useDispatch } from 'react-redux';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-const addresses = ['1 MUI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
+export default function Review() {
+  const {     firstName,
+    lastName,
+    line1,
+    city,
+    state,
+    zipCode,
+    country,
+    method,
+    cardNumber,
+    expirationDate,
+    cvv } = useSelector((state) => state.payment);
+  const addresses = [line1,city,state,zipCode,country];
 const payments = [
   { name: 'Card type:', detail: 'Visa' },
-  { name: 'Card holder:', detail: 'Mr. John Smith' },
-  { name: 'Card number:', detail: 'xxxx-xxxx-xxxx-1234' },
-  { name: 'Expiry date:', detail: '04/2024' },
+  { name: 'Card holder:', detail:firstName+lastName },
+  { name: 'Card number:', detail: cardNumber},
+  { name: 'Expiry date:', detail: expirationDate },
 ];
-
-export default function Review() {
   return (
     <Stack spacing={2}>
       <List disablePadding>

@@ -20,17 +20,18 @@ import InfoMobile from './InfoMobile';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import SitemarkIcon from './SitemarkIcon';
+import backendservicewithoutauth from '../../backendservices/backendservicewithoutauth';
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 function getStepContent(step,props) {
-  const {paymenStore}= props.store;
+  const {store}= props;
   switch (step) {
     case 0:
-      return <AddressForm store= {paymenStore} />;
+      return <AddressForm store= {store} />;
     case 1:
-      return <PaymentForm store= {paymenStore} />;
+      return <PaymentForm store= {store} />;
     case 2:
-      return <Review store= {paymenStore}/>;
+      return <Review store= {store}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -54,6 +55,10 @@ export default function Checkout(props) {
     }
   }, []);
   const handleNext = () => {
+    console.log(steps,activeStep,'steps')
+    if(activeStep === steps.length-1){
+      backendservicewithoutauth.checkout({name:'dq'})
+    }
     setActiveStep(activeStep + 1);
   };
   const handleBack = () => {

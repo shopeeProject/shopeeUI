@@ -44,10 +44,10 @@ function App(store) {
         <Routes>
         <Route path='/' element = {<HomePage store = {user}></HomePage>}></Route>
         {console.log(currentEntity)}
-        <Route path='/seller/get-products'element ={<ProtectedRoute component={GetSellerProducts} isAuthenticated={isAuthenticated && currentEntity == "seller"}  ></ProtectedRoute>}></Route>
-        <Route path='/seller/add-product'element ={<ProtectedRoute component={AddProductForm} isAuthenticated={isAuthenticated && currentEntity == "seller"}  ></ProtectedRoute>}></Route>
+        <Route path='/seller/get-products'element ={<ProtectedRoute component={GetSellerProducts} isAuthenticated={isAuthenticated && currentEntity === "seller"}  ></ProtectedRoute>}></Route>
+        <Route path='/seller/add-product'element ={<ProtectedRoute component={AddProductForm} isAuthenticated={isAuthenticated && currentEntity === "seller"}  ></ProtectedRoute>}></Route>
         <Route path = '/product/:pid' element = {<Product store = {user}></Product>}></Route>
-        <Route path = '/product/edit/:pid' element = {<ProtectedRoute component={EditProductForm} isAuthenticated={isAuthenticated && currentEntity == "seller"} edit = {true}  ></ProtectedRoute>}></Route>
+        <Route path = '/product/edit/:pid' element = {<ProtectedRoute component={EditProductForm} isAuthenticated={isAuthenticated && currentEntity === "seller"} edit = {true}  ></ProtectedRoute>}></Route>
         <Route path = "/user/sign-in"  element = {<SignIn store = {user} name = "User" entity = "user"></SignIn>}></Route>
         <Route path = "/user/sign-up"  element = {<SignUp name = "user" entity = "user"></SignUp>}></Route>
         <Route path = "/seller/sign-in"  element = {<SignIn store = {user} name = "Shopee Business" entity = "seller"></SignIn>}></Route>

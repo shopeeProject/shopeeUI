@@ -9,7 +9,7 @@ import StateLoader from '../stateloader';
 
 let stateloader = new StateLoader();
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
     user: userReducer,
     products: productReducer,
     cart: cartReducer,

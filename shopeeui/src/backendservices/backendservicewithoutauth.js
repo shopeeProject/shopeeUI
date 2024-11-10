@@ -78,6 +78,24 @@ class backendServiceWithoutAuth {
         }).catch(err => console.error(err))
 }
 
+checkout = async (checkoutDetails) =>{
+    return axios.post("/cart/checkout",checkoutDetails,{
+        proxy: {
+            protocol: 'http',
+            host: 'http://localhost',
+            port: 5000,
+            auth: {
+                username: 'yasoob',
+                password: 'p@$$w0Rd'
+            }
+        }
+    }
+)
+    .then(res => {
+        return res;
+    }).catch(err => console.error(err))
+}
+
 
 }
 

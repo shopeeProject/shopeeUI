@@ -27,7 +27,7 @@ const cartReducer = (state = initialState, action) => {
             newState = JSON.parse(JSON.stringify(state));
             item = newState.items.filter(item => item.itemId === action.payload.pid)
             console.log(item,action.payload)
-            if (item.length!=0)return state;
+            if (item.length!==0)return state;
             console.log(action.payload)
             newState.items.push(
                 {
@@ -46,7 +46,7 @@ const cartReducer = (state = initialState, action) => {
             newState = JSON.parse(JSON.stringify(state));
             item = newState.items.filter(item => item.itemId === action.payload.pid)
             console.log(item,action.payload)
-            if (item.length == 0)return newState;
+            if (item.length === 0)return newState;
             newState.size = newState.size - 1;
             newState.value = newState.value - item[0].count*item[0].price;
             newState.items = newState.items.filter(item => item.itemId   !== action.payload.pid)
@@ -55,7 +55,7 @@ const cartReducer = (state = initialState, action) => {
             newState = JSON.parse(JSON.stringify(state));
             item = newState.items.filter(item => item.itemId === action.payload.pid)
             console.log(item,action.payload)
-            if (item.length == 0)return newState;
+            if (item.length === 0)return newState;
             let idx = newState.items.findIndex(item => item.itemId === action.payload.pid)
             console.log(idx)
             let delta = action.payload.count - newState.items[idx]['count'];
@@ -71,8 +71,6 @@ const cartReducer = (state = initialState, action) => {
     }
 };
 
-// Create the store
-const cartStore = createStore(cartReducer);
 
 // Action creators
 export const addToCart = (item) => ({ type: ADD_TO_CART, payload: item});
